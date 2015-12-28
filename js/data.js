@@ -49,5 +49,8 @@ var data = {
 	data:"myData",
 	width:320,
 	height:180
+};
 
+var config = {
+	remoteSocketEndPoint: "192.168.162.21:3000"
 };
