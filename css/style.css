@@ -1,0 +1,63 @@
+.videoBoxes{
+    width: 1024px;
+    height: 576px;
+    position: relative;
+}
+#hotzone{
+    float: left;
+    width: 100%;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999999;
+}
+.videoBox{
+ float: left;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#videoStripOverlay {
+    height: 144px;
+    width: 1024px;
+    position: absolute;
+    float: left;
+    min-height: 144px;
+    z-index: 300000;
+    /*text-align:center;*/
+}
+
+
+#videoStripOverlay > div {
+    z-index: 300001;
+    width: 256px;
+    height: 144px;
+    display: inline-block;
+    vertical-align: top;
+    text-align:center;
+}
+#videoStrip{
+    width: 1280px;
+    height: 144px;
+    background-color: black;
+}
+.hidden{
+    visibility: hidden;
+}
+#mainVideo{
+    width: 1024px;
+    height: 576px;
+    background-color: black;
+}
+#mainVideoCanvas{
+    width: 1024px;
+    height: 576px;
+    min-height: 576px;
+    background-color: black;
+    position: absolute;
+    float: left;
+    /*z-index: 1;*/
+}

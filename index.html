@@ -3,32 +3,62 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Live Video</title>
-    <link type="text/css" src="css/style.css"/>
-    <script src="../shaka-player/shaka-player.live.debug.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="../../myPages/TEST/shaka-player/shaka-player.live.debug.js"></script>
     <script src="js/data.js"></script>
     <script src="js/multiple-video-handler.js"></script>
 
 </head>
 <body>
-    <video id="video1"
-
-       crossorigin="anonymous" style="visibility: hidden;"
-       controls>    </video>
-    <video id="video2"
-
+<div class="videoBoxes">
+<div id="hotzone"></div>
+<div class="videoBox">
+    <div id="videoStripOverlay">
+        <div id="vid1"></div>
+        <div id="vid2"></div>
+        <div id="vid3"></div>
+        <div id="vid4"></div>
+        <div id="vid5"></div>
+    </div>
+    <video id="videoStrip"
            crossorigin="anonymous"
-           controls>    </video>
-        <canvas id="canvas"></canvas>
+           class="hidden"
+           <!--style="visibility: hidden;"-->
+           controls>
+    </video>
+
+</div>
+<div class="videoBox">
+    <canvas id="mainVideoCanvas"></canvas>
+    <video id="mainVideo"
+           crossorigin="anonymous"
+           controls>
+    </video>
+</div>
+    </div>
     <button value="Up" onclick="videoHandler.zapUp()">Zap</button>
 
     <script>
-        var strip = document.getElementById('video1');
-        var main = document.getElementById('video2');
+        var strip = document.getElementById('videoStrip');
+        var main = document.getElementById('mainVideo');
 
-        var canvas = document.getElementById('canvas');
+        var canvas = document.getElementById('mainVideoCanvas');
 
         var videoHandler = new multipleVideoHandler(strip,main,canvas,data,shaka);
-
+//        var videoBox1 = document.querySelector(".videoBox");
+//        var videoStripOverlay = document.querySelector("#videoStripOverlay");
+//        videoStripOverlay.addEventListener("click", function(e){
+//            var videoTargetId = e.target.id;
+//            var channelNumber = videoTargetId.charAt(videoTargetId.length-1);
+//            videoHandler.zapUp(channelNumber-1);
+//        });
+//        var hotzone = document.querySelector("#hotzone");
+//        hotzone.addEventListener("mouseover", function(){
+//            videoBox1.style.zIndex = 1;
+//        });
+//        videoStripOverlay.addEventListener("mouseout", function(){
+//            videoBox1.style.zIndex = 0;
+//        });
         </script>
 </body>
 </html>
