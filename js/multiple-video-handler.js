@@ -254,4 +254,11 @@ var multipleVideoHandler = function(strip,main,canvas,data,shaka){
 			updateSource();
 		}
 	};
+	this.zapDown = function(index){
+		if (index != _this.currentStreamIndex) {
+			var channel = (index != null) && (index != undefined) ? index : _this.currentStreamIndex - 1;
+			_this.currentStreamIndex = channel % _this.data.streams.length;
+			updateSource();
+		}
+	};
 };
