@@ -16,12 +16,13 @@ var multipleVideoHandler = function(strip,main,canvas,data,shaka){
 
 	shaka.polyfill.installAll();
 	this.player = new shaka.player.Player(this.video);
+	this.player.configure({streamBufferSize:5});
 	this.mainPlayer = new shaka.player.Player(this.mainVideo);
 
 	var estimator = new shaka.util.EWMABandwidthEstimator();
-	var source = new shaka.player.DashVideoSource(this.mainSrc, null, estimator);
+	this.source = new shaka.player.DashVideoSource(this.mainSrc, null, estimator);
 
-	_this.player.load(source).then(function(){
+	_this.player.load(this.source).then(function(){
 		context = _this.canvas.getContext("2d");
 		_this.audioTracks = _this.player.getAudioTracks();
 		_this.video.play();
@@ -30,6 +31,11 @@ var multipleVideoHandler = function(strip,main,canvas,data,shaka){
 
 	 _this.player.addEventListener('seekrangechanged', onSeekrangechanged);
 	_this.mainPlayer.addEventListener('seekrangechanged', onSeekrangechanged2);
+	_this.player.addEventListener('trackschanged',onTrackChange);
+	function onTrackChange(event){
+		_this.video.volume = 1;
+
+	}
 	function onSeekrangechanged(event) {
 		console.info( "onSeekrangechanged: start=" + event.start + ", end=" + event.end );
 
@@ -45,8 +51,12 @@ var multipleVideoHandler = function(strip,main,canvas,data,shaka){
 		_this.mainVideo.pause();
 		_this.showCanvas();
 		_this.currentStream = _this.data.streams[_this.currentStreamIndex];
-		if (this.audioTracks){
-
+		if (_this.audioTracks){
+			_this.player.selectAudioTrack(_this.currentStream.channel,true,2);
+			_this.video.volume = 0;
+			setTimeout(function(){
+				_this.video.volume = 1;
+			},4000);
 		}
 		_this.mainPlayer.load(new shaka.player.DashVideoSource(_this.currentStream.src, null, estimator)).then(function(){
 			_this.mainVideo.addEventListener("playing",function(){
@@ -59,8 +69,6 @@ var multipleVideoHandler = function(strip,main,canvas,data,shaka){
 		});
 
 	}
-
-
 
 	function paintFrame(){
 		context.drawImage(_this.video,_this.currentStream.x,_this.currentStream.y,_this.currentStream.width,_this.currentStream.height,0,0,_this.data.width,_this.data.height);
@@ -79,6 +87,7 @@ var multipleVideoHandler = function(strip,main,canvas,data,shaka){
 	};
 	this.zapUp = function(){
 		_this.currentStreamIndex = (_this.currentStreamIndex + 1) % _this.data.streams.length;
+
 		updateSource();
 	};
 
