@@ -9,6 +9,7 @@ var multipleVideoHandler = function(strip,main,canvas,data,shaka){
 	this.mainVideo = main;
 	this.canvas = canvas;
 	this.data = data;
+	this.cancelSwitch = false;
 	this.mainSrc = data.mainSrc;
 	this.currentStreamIndex = 0;
 	this.audioTracks = null;
@@ -16,25 +17,34 @@ var multipleVideoHandler = function(strip,main,canvas,data,shaka){
 	this.canvas.width = this.data.width;
 	this.canvas.height = this.data.height;
 
+	//Install shaka polyfills
 	shaka.polyfill.installAll();
-	this.stripPlayer = new shaka.player.Player(this.stripVideo);
-	this.stripPlayer.configure({
-		streamBufferSize: 40
-	});
+
+	//Init main player
 	this.mainPlayer = new shaka.player.Player(this.mainVideo);
 	this.mainPlayer.configure({
 		streamBufferSize: 10
 	});
 	var mainEstimator = new shaka.util.EWMABandwidthEstimator();
 	var mainSource = new shaka.player.DashVideoSource(this.currentStream.src, null, mainEstimator);
+
+	//Init strip player
+	this.stripPlayer = new shaka.player.Player(this.stripVideo);
+	this.stripPlayer.configure({
+		streamBufferSize: 40
+	});
 	var stripEstimator = new shaka.util.EWMABandwidthEstimator();
 	var stripSource = new shaka.player.DashVideoSource(this.mainSrc, null, stripEstimator);
 
+	//Handle video display
 	showVideo();
+
+	//Load the main player and start playback
 	_this.mainPlayer.load(mainSource).then(function(){
 		_this.mainVideo.play();
 	});
 
+	//Load the strip player in the background
 	_this.stripPlayer.load(stripSource).then(function(){
 		context = _this.canvas.getContext("2d");
 		_this.audioTracks = _this.stripPlayer.getAudioTracks();
@@ -65,36 +75,52 @@ var multipleVideoHandler = function(strip,main,canvas,data,shaka){
 
 
 	function updateSource(){
+		//Cancel pending switch
+		if (_this.isSwitching){
+			console.info("Got request for switch while switching");
+			_this.cancelSwitch = true;
+			_this.mainVideo.removeEventListener("playing", _this.playingEventHandler);
+		}
+		//Pause the main video before changing to new stream
 		_this.mainVideo.pause();
+		//Display the canvas until we can show the new stream
 		_this.showCanvas();
 		_this.currentStream = _this.data.streams[_this.currentStreamIndex];
+		//Handle audio stream switch until we can change to new stream
 		if (_this.audioTracks){
-			_this.stripPlayer.selectAudioTrack(_this.currentStream.channel, true, 2);
+			_this.stripPlayer.selectAudioTrack(_this.currentStream.channel+2, true, 2);
 			_this.mainVideo.volume = 0;
 			_this.stripVideo.volume = 0;
 			setTimeout(function(){
 				_this.stripVideo.volume = 1;
-			}, 4000);
+			}, 2000);
 		}
+		//Set the switching flag
+		_this.isSwitching = true;
+		//Load the new stream
 		var playerCurrentStream = new shaka.player.DashVideoSource(_this.currentStream.src, null, mainEstimator);
 		_this.mainPlayer.load(playerCurrentStream).then(function(){
 			console.info("Main player loaded, register playing event");
 			var alignPlayers = function(){
+				_this.cancelSwitch = false;
 				console.info("Remove playing event handler");
 				_this.mainVideo.removeEventListener("playing", alignPlayers);
 				console.info("Main video is playing, try to sync...");
 				var boundedSync = sync.bind(_this);
 				boundedSync()
 						.then(function () {
+							_this.isSwitching = false;
 							_this.showVideo();
 							_this.mainVideo.volume = 1;
 							_this.stripVideo.volume = 0;
 						})
 						.catch(function () {
+							_this.isSwitching = false;
 							console.info("Failed sync, reset playback rates");
 						});
 			}.bind(_this);
-			_this.mainVideo.addEventListener("playing", alignPlayers);
+			_this.playingEventHandler = alignPlayers;
+			_this.mainVideo.addEventListener("playing", _this.playingEventHandler);
 			_this.mainPlayer.setPlaybackStartTime(_this.stripVideo.currentTime + 10);
 			_this.mainVideo.play();
 		});
@@ -117,7 +143,11 @@ var multipleVideoHandler = function(strip,main,canvas,data,shaka){
 							console.info("Videos are synced");
 							return resolve();
 						}
-						if (count >= 50){
+						if (count >= 50 || _this.cancelSwitch){
+							if (_this.cancelSwitch){
+								console.info("Cancel switching");
+								_this.cancelSwitch = false;
+							}
 							console.info("Videos are not synced after " + count + " retries");
 							clearInterval(syncVideoInterval);
 							return reject();
