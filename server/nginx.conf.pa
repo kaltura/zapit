@@ -1,0 +1,21 @@
+include nginx.conf.global;
+
+http {
+	upstream kalapi {
+		server pa-front-stg2;
+	}
+	
+	upstream thumbcache {
+		server pa-thumbcachevip:8080;
+	}
+
+	upstream fallback {
+		server ny-kalhls.origin.kaltura.com;
+	}
+
+	upstream udrm {
+		server pa-udrm:8080;
+	}
+	
+	include nginx.conf.http;
+}

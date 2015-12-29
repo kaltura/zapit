@@ -1,0 +1,55 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="http://cdnapi.kaltura.com/p/2035982/sp/203598200/embedIframeJs/uiconf_id/32889141/partner_id/2035982"></script>
+<div style="position: absolute;  margin: auto;  top: 0;  right: 0;  bottom: 0;  left: 0;  width: 600px;  height: 460px;  background-color: #ccc;  border-radius: 3px;">
+<div id="kaltura_player_1451380049" style="width: 600px; height: 395px;" itemprop="video" itemscope itemtype="http://schema.org/VideoObject">
+<span itemprop="name" content="ABC News 0"></span>
+<span itemprop="description" content=""></span>
+<span itemprop="duration" content="0"></span>
+<span itemprop="thumbnail" content="http://cfvod.kaltura.com/p/2035982/sp/203598200/thumbnail/entry_id/1_to8sgrka/version/0"></span>
+<span itemprop="width" content="560"></span>
+<span itemprop="height" content="395"></span>
+</div>
+<div style="width:600px; text-align:center; top:20px; position:relative">
+<button id="target" class="changeMedia" data-entryId="1_to8sgrka">
+Channel1
+</button>
+<button id="target" class="changeMedia" data-entryId="1_vbg5ri69">
+Channel2
+</button>
+<button id="target" class="changeMedia" data-entryId="1_dzed8s2u">
+Channel3
+</button>
+<button id="target" class="changeMedia" data-entryId="1_6hh7b0qs">
+Channel4
+</button>
+<button id="target" class="changeMedia" data-entryId="1_putvd0za">
+Channel5
+</button>
+</div>
+</div>
+<script>
+kWidget.embed({
+"targetId": "kaltura_player_1451380049",
+"wid": "_2035982",
+"uiconf_id": 32889141,
+"flashvars": {
+"streamerType": "auto",
+"ks": "NjRhNTFlOTRiZjMxODZjMzg1ZjUzYmEyMThlZjRkOGM1YTQyMjI3YXwyMDM1OTgyOzIwMzU5ODI7MTQ1MTQ2NTk4MDsyOzE0NTEzNzk1ODAuODMzNjthZG1pbjtkaXNhYmxlZW50aXRsZW1lbnQ7Ow"
+},
+"cache_st": 1451380049,
+"entry_id": "1_to8sgrka"
+});
+kWidget.addReadyCallback(function(playerId){
+        $( '.changeMedia' ).click(function(){
+		var kdp = document.getElementById(playerId);
+                kdp.sendNotification( "changeMedia", { 'entryId' : $(this).attr('data-entryId') });
+        });
+});
+</script>
+</body>
+</html>
