@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<script src="../js/data.js"></script>
+<script src="jquery.min.js"></script>
+<link href="main.css" rel="stylesheet">
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+
+    <div id="container">
+        <img src="Artboard.png">
+        <div id="chUp" class="right">
+        </div>
+        <div id="chDown" class="left">
+        </div>
+        <div id="volumeUp" class="up">
+        </div>
+        <div id="volumeDown" class="down">
+        </div>
+    </div>
+</body>
+<script>
+    $("#chDown").on('touchstart', function(){
+        change('down');
+        doBlur();
+        event.preventDefault();
+    });
+    $("#chUp").on('touchstart', function(){
+        change('up');
+        doBlur();
+        event.preventDefault();
+    });
+    $("#volumeUp").on('touchstart', function(){
+        change('volumeUp');
+        doBlur();
+        event.preventDefault();
+    });
+    $("#volumeDown").on('touchstart', function(){
+        change('volumeDown');
+        doBlur();
+        event.preventDefault();
+    });
+
+    function change(direction){
+        $.get( "http://" + config.remoteSocketEndPoint +  "/command?dir=" + direction, function( data ) {});
+    }
+
+    function doBlur(){
+        $("#container").addClass("blur");
+        setTimeout(function(){removeBlur();},250);
+    }
+
+    function removeBlur(){
+        $("#container").removeClass("blur");
+    }
+
+</script>
+</html>

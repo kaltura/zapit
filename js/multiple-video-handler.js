@@ -85,7 +85,7 @@ var multipleVideoHandler = function(strip,main,canvas,data,config,shaka){
 			clearTimeout(_this.volumeWatchDog);
 			_this.volumeWatchDog = setTimeout(function(){
 				_this.stripVideo.volume = volume;
-			}, 2000);
+			}, 4000);
 		}
 	}
 	function updateSource(){
@@ -121,7 +121,9 @@ var multipleVideoHandler = function(strip,main,canvas,data,config,shaka){
 		var playerCurrentStream = new shaka.player.DashVideoSource(_this.currentStream.src, null, mainEstimator);
 		_this.mainPlayer.unload()
 				.then(function(){
-					return _this.mainPlayer.load(playerCurrentStream);
+					return _this.mainPlayer.load(playerCurrentStream ).then(function(){
+						_this.mainVideo.play();
+					});
 				}).then(function(){
 			log("Main player loaded, register playing event");
 
@@ -310,7 +312,11 @@ var multipleVideoHandler = function(strip,main,canvas,data,config,shaka){
 		changeChannel(_this.currentStreamIndex + 1);
 	};
 	this.zapDown = function(){
-		changeChannel(_this.currentStreamIndex - 1);
+		var index =     _this.currentStreamIndex - 1;
+		if (index < 0 ){
+			index = _this.data.streams.length - 1;
+		}
+		changeChannel(index);
 	};
 	this.setVolume = function(percentage){
 		setVolume(percentage);

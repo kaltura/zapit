@@ -52,6 +52,6 @@ var data = {
 };
 
 var config = {
-	remoteSocketEndPoint: "",
+	remoteSocketEndPoint: "192.168.161.232:3000",
 	debug: true
 };
