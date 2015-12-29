@@ -1,0 +1,89 @@
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+.channelsView{
+    z-index: 1;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1024px;
+    height: 144px;
+    position: relative;
+}
+
+#videoStripGrid {
+    height: 144px;
+    width: 1024px;
+    position: absolute;
+    float: left;
+    min-height: 144px;
+    z-index: 1000;
+    /*text-align:center;*/
+}
+
+
+#videoStripGrid > div {
+    width: 204.8px;
+    height: 144px;
+    display: inline;
+    float: left;
+}
+#videoStrip{
+    width: 1024px;
+    height: 144px;
+    background-color: black;
+}
+.hidden{
+    visibility: hidden;
+}
+.videoBox{
+    float: left;
+    width: 1024px;
+    height: 616px;
+}
+#mainVideo{
+    width: 1024px;
+    height: 576px;
+    background-color: black;
+}
+#mainVideoCanvas{
+    width: 1024px;
+    height: 576px;
+    min-height: 200px;
+    background-color: black;
+    position: absolute;
+    float: left;
+    /*z-index: 1;*/
+}
+
+.controlbar{
+    top: -4px;
+    position: relative;
+    height: 40px;
+    width: 1024px;
+    background-color: #9E9E9E;
+}
+.controlbar> span {
+    width: 50%;
+    float: left;
+    text-align: center;
+    height: 40px;
+}
+
+.controlbar> span > img {
+    height:40px;
+}
+
+.right{
+    transform: rotate(180deg);
+}
+
+body{
+    background-image: url("1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}

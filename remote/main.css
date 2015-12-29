@@ -1,0 +1,56 @@
+
+#container{
+    position: relative;
+    width: 667px;
+    height: 400px;
+}
+
+.down {
+    position: absolute;
+    top:835px;
+    left:230px;
+    width: 300px;
+    height: 300px;
+    z-index: 10000;
+    background-color: transparent;
+}
+
+.up {
+    position: absolute;
+    top:185px;
+    left:230px;
+    width: 300px;
+    height: 300px;
+    z-index: 10000;
+    background-color: transparent;
+}
+
+
+.left {
+    position: absolute;
+    top:535px;
+    left:0px;
+    width: 250px;
+    height: 250px;
+    z-index: 10000;
+    background-color: transparent;
+}
+
+.right {
+    position: absolute;
+    top:535px;
+    left: 500px;
+    width: 250px;
+    height: 250px;
+    z-index: 10000;
+    background-color: transparent;
+}
+
+.blur{
+    filter: blur(25px);
+    -webkit-filter: blur(25px);
+    -moz-filter: blur(25px);
+    -o-filter: blur(25px);
+    -ms-filter: blur(25px);
+    transition: 0.5s;
+}
