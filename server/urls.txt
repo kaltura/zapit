@@ -1,0 +1,6 @@
+http://lbd.kaltura.com:8001/mapped/merge_manifest.php/file/strip/manifest.mpd
+http://lbd.kaltura.com:8001/mapped/merge_manifest.php/file/0/manifest.mpd
+http://lbd.kaltura.com:8001/mapped/merge_manifest.php/file/1/manifest.mpd
+http://lbd.kaltura.com:8001/mapped/merge_manifest.php/file/2/manifest.mpd
+http://lbd.kaltura.com:8001/mapped/merge_manifest.php/file/3/manifest.mpd
+http://lbd.kaltura.com:8001/mapped/merge_manifest.php/file/4/manifest.mpd
