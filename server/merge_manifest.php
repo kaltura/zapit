@@ -74,13 +74,15 @@ $fileName = $params['file'];
 $arr = array();
 if ($fileName == 'strip')
 {
-        $arr[]=getContent("http://lbd.kaltura.com:8001/mapped/strip.json/manifest.mpd");
+	$content = getContent("http://lbd.kaltura.com:8001/mapped/strip.json/manifest.mpd");
+	$content = str_replace('id="1"', 'group="1"', $content);
+	$arr[]=$content;
 	for ($i = 0; $i < 5; $i++)
 	{
 		$content=getContent("http://lbd.kaltura.com:8001/mapped/aud-$i.json/manifest.mpd");
 		$adaptAttrs = 'group="'.($i+2).'"'."\n";
 		$adaptAttrs .= '        lang="en_vid'.$i.'"';
-		$content = str_replace('group="2"', $adaptAttrs, $content);
+		$content = str_replace('id="2"', $adaptAttrs, $content);
 		$arr[]=$content;
 	}
 }
